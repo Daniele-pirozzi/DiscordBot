@@ -33,7 +33,9 @@ client.on("message", msg => {
   if(msg.content.startsWith('bot')){
     var message = msg.content.split('bot ');
     var parsedMsg = parseIstruction(msg);
-    msg.reply("result ${parsedMsg.result}\nSuccesses ${parsedMsg.successes}\n");
+    console.log("result ", JSON.stringify(parsedMsg.result), '\nSuccesses ', JSON.stringify(parsedMsg.successes), '\n');
+    msg.reply("result ", JSON.stringify(parsedMsg.result), '\n');
+    msg.reply('Successes ', JSON.stringify(parsedMsg.successes), '\n');
   }
 })
 
