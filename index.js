@@ -21,11 +21,20 @@ client.on("ready", () => {
 })
 
 client.on("message", msg => {
-  if (msg.content === "ping") {
+  if (msg.content.includes("ping")) {
     msg.reply("pong");
   }
 
+  if(msg.content.includes("cosa?") || msg.content.includes("che cosa?")){
+    msg.channel.send("STOCAZZO", {files: ["https://c.tenor.com/Ww4jX1oirBYAAAAM/marilyn-monroe-sto-cazzo.gif"] });
+  }
   
+
+  // if(msg.content.startsWith('!')){
+  //   parseIstruction(msg).then(parsedMsg => {
+      
+  //   });
+  // }
 })
 
 function rollDice(maxValue, successValue, diceNumber, explodesOn){
