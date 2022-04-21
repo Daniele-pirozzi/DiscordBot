@@ -2,8 +2,10 @@ const Discord = require("discord.js")
 const client = new Discord.Client()
 const Database = require("@replit/database")
 const db = new Database()
-const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
+//const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 
+
+  
 db.get("rolls").then(rolls => {
   if (!rolls || rolls.length < 1) {
     db.set("rolls", [])
@@ -49,7 +51,7 @@ client.on("message", msg => {
   }
 
   if(msg.content.includes("basito") || msg.content.includes("f4")){
-    msg.channel.send("",{files: ["https://c.tenor.com/eU8TztSCXysAAAAC/f4basito-boris.gif"] });    
+    msg.channel.send("",{files: ["https://c.tenor.com/eU8TztSCXysAAAAC/f4basito-boris.gif"] });  
   }
 
   if(msg.content.includes("kyne") ||
@@ -191,8 +193,8 @@ function parseIstruction(msg){
   }
 }
 
-function printDbFile(){
+// function printDbFile(){
   
-}
+// }
 
 client.login(process.env.TOKEN)
