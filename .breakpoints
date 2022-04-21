@@ -1,0 +1,66 @@
+{
+  "files": {
+    "index.js": [
+      {
+        "id": "6e4399d8-d7d5-4c7a-98a2-61fea40400ba",
+        "line": 6,
+        "version": 888,
+        "index": 146
+      },
+      {
+        "id": "b00a0520-2c1c-4d05-b286-6d8b041f0dd5",
+        "line": 10,
+        "version": 888,
+        "index": 244
+      },
+      {
+        "id": "0752a991-1c0b-4b0f-909d-03f88c2df821",
+        "line": 12,
+        "version": 888,
+        "index": 248
+      },
+      {
+        "id": "e055446b-d657-424a-9255-6a678799d1e4",
+        "line": 16,
+        "version": 888,
+        "index": 345
+      },
+      {
+        "id": "907c1429-9c21-4b21-a449-8c986d79278b",
+        "line": 30,
+        "version": 888,
+        "index": 527
+      },
+      {
+        "id": "faeb04a1-c616-4a2c-b9b2-bdb2a8e7eccf",
+        "line": 35,
+        "version": 888,
+        "index": 649
+      },
+      {
+        "id": "829ab19b-e4a5-4766-ba2f-a2870e010de0",
+        "line": 42,
+        "version": 888,
+        "index": 878
+      },
+      {
+        "id": "0c3faeab-57f0-431e-a4b8-5bd3dd0d53c7",
+        "line": 44,
+        "version": 888,
+        "index": 885
+      },
+      {
+        "id": "9c72d2cc-2b3a-42d9-ac99-8e8d88f4261b",
+        "line": 52,
+        "version": 888,
+        "index": 1038
+      },
+      {
+        "id": "2cbda6d1-0aee-438f-a1ba-0a9c52e257a5",
+        "line": 58,
+        "version": 888,
+        "index": 1123
+      }
+    ]
+  }
+}
