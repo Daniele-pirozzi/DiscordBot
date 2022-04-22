@@ -2,9 +2,8 @@ const Discord = require("discord.js")
 const client = new Discord.Client()
 const Database = require("@replit/database")
 const db = new Database()
+const fs = require('fs')
 //const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
-
-
   
 db.get("rolls").then(rolls => {
   if (!rolls || rolls.length < 1) {
@@ -87,8 +86,14 @@ client.on("message", msg => {
       msg.reply("**Fail**");
     }
   }
-})
 
+  if (msg.content  === "ShutDown") {
+    msg.channel.send("Shutting down...").then(() => {
+      getDBresults()
+      client.destroy()
+    })
+  }
+})
 
 function rollDice(successValue, diceNumber, explodesOn){
   var i=0;
@@ -193,8 +198,18 @@ function parseIstruction(msg){
   }
 }
 
-// function printDbFile(){
-  
-// }
+function getDBresults(){
+  db.get("rolls").then(rolls => {
+    if (rolls.length > 1) {
+      fs.writeFile('/Desktop/test.txt', JSON.stringify(rolls), { flag: 'a+' },  err => {
+        if (err) {
+          console.error(err)
+          return
+        }
+      })
+    } 
+    return
+  })
+}
 
 client.login(process.env.TOKEN)
