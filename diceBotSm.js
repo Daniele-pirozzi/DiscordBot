@@ -4,9 +4,7 @@ const Database = require("@replit/database")
 const db = new Database()
 const fs = require('fs')
 const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
-const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
-
-
+  
 db.get("rolls").then(rolls => {
   if (!rolls || rolls.length < 1) {
     db.set("rolls", [])
@@ -23,54 +21,31 @@ client.on("ready", msg => {
   console.log(`Logged in as ${client.user.tag}!`)
 })
 
-client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
-  
-  if(interaction.isButton &&  ){
-  
-  }
+// client.on('interactionCreate', async interaction => {
+// 	if (!interaction.isCommand()) return;
 
-	if (interaction.commandName === 'YOU DECIDE!') {
-		const row = new MessageActionRow()
-			.addComponents(
-				new MessageButton()
-					.setCustomId('first')
-					.setLabel('Iago Moment')
-					.setStyle('PRIMARY'),
-			)
-      .addComponents(
-				new MessageButton()
-					.setCustomId('second')
-					.setLabel('Clara Moment')
-					.setStyle('PRIMARY'),
-			)
-      .addComponents(
-        new MessageButton()
-          .setCustomId('third')
-          .setLabel('Desde Moment')
-          .setStyle('PRIMARY'),
-			)
-      .addComponents(
-        new MessageButton()
-          .setCustomId('fourth')
-          .setLabel('Zhao Moment')
-          .setStyle('PRIMARY'),
-  		)
-		await interaction.reply({ content: 'SELECT appropiate reaction', ephemereal : true, components: [row]});
-	}
-  
-});
+// 	if (interaction.commandName === 'ping') {
+// 		const row = new MessageActionRow()
+// 			.addComponents(
+
+        
+// 			);
+
+// 		const embed = new MessageEmbed()
+// 			.setColor('#0099ff')
+// 			.setTitle('Some title')
+// 			.setDescription();
+
+// 		await interaction.reply({ content: {} , ephemeral: true, embeds: [embed], components: [row] });
+// 	}
+// });
 
 client.on("message", msg => {
-  if(msg.content.includes("cosa?") || msg.content.includes("che cosa?") || msg.content.includes("chi?")){
+  if(msg.content.includes("cosa?") || msg.content.includes("che cosa?") ||   msg.content.includes("chi?")){
     msg.channel.send("STOCAZZO", {files: ["https://c.tenor.com/Ww4jX1oirBYAAAAM/marilyn-monroe-sto-cazzo.gif"] });
   }
 
-  if(msg.content.includes("clara moment") || msg.content.includes("Clara moment")){
-    msg.channel.send("",{files: ["https://c.tenor.com/EaGblD_u2BAAAAAC/tefacciocorca-corcare.gif"] });
-  }
-
-  if(msg.content.includes("desde moment") || msg.content.includes("Desde moment")){
+    if(msg.content.includes("desde moment") || msg.content.includes("Desde moment")){
     msg.channel.send("",{files: ["https://media1.giphy.com/media/Ys2Z1pTvkGhH2/giphy.gif?cid=ecf05e472dmsieqm8s05ytemm4nd1ksupr627gdt7n6hegnd&rid=giphy.gif&ct=g"] });
   }
 
@@ -99,20 +74,30 @@ client.on("message", msg => {
   if(msg.content.includes("pacchetto")){
     msg.channel.send("è fisicamente un ...",{files: ["https://c.tenor.com/LMgcm-AwNKsAAAAS/frustrated-yelling.gif"] });  
   }
+
+  // if(msg.content.includes("Autobots, assemble!")){
+  //   const embed = new Discord.MessageEmbed()
+  //    .setTitle('OPTIMUS FIZZ')
+  //    .setImage(attachment:"C:\Users\User\Desktop\dani mac\dani\vari\dnd\immagini stupide\optimus fizz.jpg");
+  //   console.log(embed);
+  //   msg.channel.send({embed});  
+  // }
   
-  if(msg.content.startsWith('bot') || msg.content.startsWith('Bot')){
+  if(msg.content.startsWith('bot') || msg.content.startsWith('Bot') ){
     var message = msg.content.split('bot ');
     var parsedMsg = parseIstruction(msg);
-    
-    var msg1 = JSON.stringify(parsedMsg.result);
-    console.log(msg1);
-    msg.reply("**result** " + msg1);
+    var msg1 = "**result** " + JSON.stringify(parsedMsg.result);
 
-    if(parsedMsg.successes > 0 ){
-      msg1 = JSON.stringify(parsedMsg.successes);
-      console.log(msg1);
-      msg.reply("**successes** " + msg1);
-      
+    //sistemare qua
+    if(parsedMsg.success > 0 || parsedMsg.partialSuccess > 0 ){
+      if(parsedMsg.partialSuccesses > 0){
+        msg1 += "**partialSuccesses** "+ JSON.stringify(parsedMsg.partialSuccesses);
+        msg.reply(msg1);
+      } else{
+        
+      }
+    /////////////////////////////////////////////////////
+           
     }else if(msg.content.includes('chance')){
       msg.reply("**Critical failure**");
     }else if(!msg.content.includes('init')){
@@ -134,31 +119,26 @@ client.on("message", msg => {
   if(msg.content.includes("Giove") || msg.content.includes("giove")){
     msg.channel.send("STO STRONZO", {files: [] });
   }
+
   
 })
 
-collector.on('collect', async buttonMessage => {
-	if (buttonMessage.customId === 'first') {
-		await i.update({ content: 'A button was clicked!', components: [] });
-	}else if (buttonMessage.customId === 'second'){
-    
-  }else if(buttonMessage.customId === 'third'){
-    
-  }else if(buttonMessage.customId === 'fourth'){
-    
-  }
-});
-
-function rollDice(successValue, diceNumber, explodesOn){
+function rollDice(successValue, partialSuccessValue, diceNumber, explodesOn){
   var i=0;
   var successes = 0;
+  var partialSuccesses = 0;
   var results = [];
   
   while(i<diceNumber){
     const randomNumber = Math.round((Math.random() * (3) + 1 + Math.random() * (3) +1)) + 2;
     results.push(randomNumber);
     
-    if(randomNumber >= successValue) successes++;
+    if(randomNumber >= successValue){
+      successes++;
+    } else if(randomNumber >= partialSuccessValue && randomNumber <= successValue){
+      partialSuccesses++;
+    }
+
     if(randomNumber === explodesOn) diceNumber++;
     i++;  
   }
@@ -167,7 +147,8 @@ function rollDice(successValue, diceNumber, explodesOn){
     rolls.push(
       {
         result: results,
-        successes: successes
+        successes: successes,
+        partialSuccesses : partialSuccesses
       }
     )
     db.set("rolls", rolls)
@@ -175,24 +156,30 @@ function rollDice(successValue, diceNumber, explodesOn){
 
   return {
           result: results,
-          successes: successes
+          successes: successes,
+          partialSuccesses : partialSuccesses
   }
 }
 
-function rote(successValue, diceNumber, explodesOn){
+function rote(successValue, partialSuccessValue, diceNumber, explodesOn){
   var i=0;
   var successes = 0;
   var results = [];
   var reroll = true;
+  var partialSuccesses = 0;
+  
   
   while(i<diceNumber){
     const randomNumber = Math.round((Math.random() * (3) + 1 + Math.random() * (3) +1)) + 2;
     results.push(randomNumber);
     
-    if(randomNumber >= successValue){
-      reroll = true;
-      successes++;
-      
+    if(randomNumber >= partialSuccessValue){
+      if(randomNumber <= successValue){
+        partialSuccesses++;
+      }else{
+        reroll = true;
+        successes++;
+      }
     }else if(reroll){
       reroll = false;
       diceNumber++;
@@ -208,7 +195,8 @@ function rote(successValue, diceNumber, explodesOn){
     rolls.push(
       {
         result: results,
-        successes: successes
+        successes: successes,
+        partialSuccesses : partialSuccesses
       }
     )
     db.set("rolls", rolls)
@@ -216,7 +204,8 @@ function rote(successValue, diceNumber, explodesOn){
 
   return {
           result: results,
-          successes: successes
+          successes: successes,
+          partialSuccesses : partialSuccesses
   }
   
 }
@@ -226,45 +215,45 @@ function parseIstruction(msg){
   
   switch (message[1]){
     case 'roll':
-      var obj = rollDice(8, message[2], 10);
+      var obj = rollDice(9, 6, message[2], 10);
       console.log('roll ', obj);
       return obj;
      
     case 'rote':
-      var obj = rote(8, message[2], 10);
+      var obj = rote(9, 6, message[2], 10);
       return obj;
      
    case 'Nagain':
-      var obj = rollDice(8, message[2], 9);
+      var obj = rollDice(9, 6,  message[2], 9);
      return obj;
       
    case 'Eagain':
-      var obj = rollDice(8, message[2], 8);
+      var obj = rollDice(9, 6, message[2], 8);
       return obj;
       
    case 'init':
-      var obj = rollDice(11, 1, 11);
+      var obj = rollDice(11, 11, 1, 11);
       return obj;
       
    case 'chance':
-      var obj = rollDice(11, 1, 11);
+      var obj = rollDice(11, 11, 1, 11);
       return obj;
   }
 }
 
 //WIP
-// function getDBresults(){
-//   db.get("rolls").then(rolls => {
-//     if (rolls.length > 1) {
-//       fs.writeFile('C:\Users\User\Desktop\test.txt', JSON.stringify(rolls), { flag: 'a+' },  err => {
-//         if (err) {
-//           console.error(err)
-//           return
-//         }
-//       })
-//     } 
-//     return
-//   })
-// }
+function getDBresults(){
+  db.get("rolls").then(rolls => {
+    if (rolls.length > 1) {
+      fs.writeFile('C:\Users\User\Desktop\test.txt', JSON.stringify(rolls), { flag: 'a+' },  err => {
+        if (err) {
+          console.error(err)
+          return
+        }
+      })
+    } 
+    return
+  })
+}
 
 client.login(process.env.TOKEN)
