@@ -1,5 +1,3 @@
 {
-	"clientId": "891630056970018836",
-	"guildId": "876543210987654321",
-	"token": process.env.TOKEN
+	"clientId": "891630056970018836"
 }

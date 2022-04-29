@@ -22,73 +22,73 @@ client.on("ready", msg => {
   console.log(`Logged in as ${client.user.tag}!`)
 })
 
-// client.on('interactionCreate', async interaction => {
+client.on('interactionCreate', async interaction => {
   
-//   const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
+  const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
 
-//   collector.on('collect', async buttonMessage => {
-//   	if (buttonMessage.customId === 'first') {
-//   		await i.update({ content: 'A button was clicked!', components: [] });
-//   	}else if (buttonMessage.customId === 'second'){
-//   		await i.update({ content: 'A button was clicked!', components: [] });
-      
-      
-//     }else if(buttonMessage.customId === 'third'){
-//   		await i.update({ content: 'A button was clicked!', components: [] });
-      
-      
-//     }else if(buttonMessage.customId === 'fourth'){
-//   		await i.update({ content: 'A button was clicked!', components: [] });
-      
-//     }
-//   });
+  collector.on('collect', async buttonMessage => {
+  	if (buttonMessage.customId === 'first') {
+  		await i.update({ content: 'A button was clicked!', components: [] });
+  	}else if (buttonMessage.customId === 'second'){
+  		await i.update({ content: 'A button was clicked!', components: [] });  
+    }else if(buttonMessage.customId === 'third'){
+  		await i.update({ content: 'A button was clicked!', components: [] });
+    }else if(buttonMessage.customId === 'fourth'){
+  		await i.update({ content: 'A button was clicked!', components: [] });
+    }
+  });
   
-//   // if(interaction.isButton &&  ){
+  // if(interaction.isButton &&  ){
   
-//   // }
+  // }
 
-// 	if (interaction.commandName === 'YOU DECIDE!') {
-// 		const row = new MessageActionRow()
-// 			.addComponents(
-// 				new MessageButton()
-// 					.setCustomId('first')
-// 					.setLabel('Iago Moment')
-// 					.setStyle('PRIMARY'),
-// 			)
-//       .addComponents(
-// 				new MessageButton()
-// 					.setCustomId('second')
-// 					.setLabel('Clara Moment')
-// 					.setStyle('PRIMARY'),
-// 			)
-//       .addComponents(
-//         new MessageButton()
-//           .setCustomId('third')
-//           .setLabel('Desde Moment')
-//           .setStyle('PRIMARY'),
-// 			)
-//       .addComponents(
-//         new MessageButton()
-//           .setCustomId('fourth')
-//           .setLabel('Zhao Moment')
-//           .setStyle('PRIMARY'),
-//   		)
-// 		await interaction.reply({ content: 'SELECT appropiate reaction', ephemereal : true, components: [row]});
-// 	}
+	if (interaction.commandName === 'decide') {
+		const row = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+					.setCustomId('first')
+					.setLabel('Iago Moment')
+					.setStyle('PRIMARY'),
+			)
+      .addComponents(
+				new MessageButton()
+					.setCustomId('second')
+					.setLabel('Clara Moment')
+					.setStyle('PRIMARY'),
+			)
+      .addComponents(
+        new MessageButton()
+          .setCustomId('third')
+          .setLabel('Desde Moment')
+          .setStyle('PRIMARY'),
+			)
+      .addComponents(
+        new MessageButton()
+          .setCustomId('fourth')
+          .setLabel('Zhao Moment')
+          .setStyle('PRIMARY'),
+  		)
+		await interaction.reply({ content: 'SELECT appropiate reaction', ephemereal : true, components: [row]});
+	}
 
-//   // if (interaction.commandName === 'DELETE DATABASE') {
-//   //   const row = new MessageActionRow()
-// 		// 	.addComponents(
-//   //       new MessageButton()
-//   //         .setCustomId('fourth')
-//   //         .setLabel('Zhao Moment')
-//   //         .setStyle('DELETE'),
-//   // 		)
-    
-//   //   await interaction.reply({ content: 'ARE YOU SURE?', ephemereal : true, components : [])
-//   // }
+  // if (interaction.commandName === 'DELETE DATABASE') {
+  //   const row = new MessageActionRow()
+		// 	.addComponents(
+  //       new MessageButton()
+  //         .setCustomId('delete')
+  //         .setLabel('Delete')
+  //         .setStyle('DELETE'),
+  // 		)
+  //     .addComponents(
+  //       new MessageButton()
+  //         .setCustomId('cancel')
+  //         .setLabel('Cancel')
+  //         .setStyle('PRIMARY'),
+  // 		)
+  //   await interaction.reply({ content: 'ARE YOU SURE?', ephemereal : true, components : [row])
+  // }
   
-// });
+});
 
 client.on("message", msg => {
   if(msg.content.includes("cosa?") || msg.content.includes("che cosa?") || msg.content.includes("chi?")){
@@ -289,16 +289,24 @@ function parseIstruction(msg){
 
 function getDBresults(){
   db.get("rolls").then(rolls => {
+    if (rolls.length > 1) {
+      const folderName = '/Users/DS';
+      try {
+        if (!fs.existsSync(folderName)) {
+          fs.mkdirSync(folderName);
+        }
+      } catch (err) {
+        console.error(err);
+    }
     
-  //   if (rolls.length > 1) {
-  //     fs.writeFile('C:\Users\User\Desktop\test.txt', JSON.stringify(rolls), { flag: 'a+' },  err => {
-  //       if (err) {
-  //         console.error(err)
-  //         return
-  //       }
-  //     })
-  //   } 
-  //   return
+    fs.writeFile(folderName, JSON.stringify(rolls), { flag: 'a+' },  err => {
+        if (err) {
+          console.error(err)
+          return
+        }
+      })
+    } 
+    return
     console.log(rolls);
   })
 }
