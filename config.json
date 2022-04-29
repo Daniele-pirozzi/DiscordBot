@@ -1,5 +1,5 @@
 {
-	"clientId": "//selezionare dalla dev mod il client ",
+	"clientId": "891630056970018836",
 	"guildId": "876543210987654321",
-	"token": "OTY2MzYyMzE0MjUxMDU1MTA0.YmApCQ.lJliCUDotHHJQ4AxC6Sff9ck7L4"
+	"token": process.env.TOKEN
 }

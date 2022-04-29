@@ -4,7 +4,6 @@ const Database = require("@replit/database")
 const db = new Database()
 const fs = require('fs')
 const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
-const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
 
 
 db.get("rolls").then(rolls => {
@@ -23,43 +22,73 @@ client.on("ready", msg => {
   console.log(`Logged in as ${client.user.tag}!`)
 })
 
-client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
+// client.on('interactionCreate', async interaction => {
   
-  if(interaction.isButton &&  ){
-  
-  }
+//   const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
 
-	if (interaction.commandName === 'YOU DECIDE!') {
-		const row = new MessageActionRow()
-			.addComponents(
-				new MessageButton()
-					.setCustomId('first')
-					.setLabel('Iago Moment')
-					.setStyle('PRIMARY'),
-			)
-      .addComponents(
-				new MessageButton()
-					.setCustomId('second')
-					.setLabel('Clara Moment')
-					.setStyle('PRIMARY'),
-			)
-      .addComponents(
-        new MessageButton()
-          .setCustomId('third')
-          .setLabel('Desde Moment')
-          .setStyle('PRIMARY'),
-			)
-      .addComponents(
-        new MessageButton()
-          .setCustomId('fourth')
-          .setLabel('Zhao Moment')
-          .setStyle('PRIMARY'),
-  		)
-		await interaction.reply({ content: 'SELECT appropiate reaction', ephemereal : true, components: [row]});
-	}
+//   collector.on('collect', async buttonMessage => {
+//   	if (buttonMessage.customId === 'first') {
+//   		await i.update({ content: 'A button was clicked!', components: [] });
+//   	}else if (buttonMessage.customId === 'second'){
+//   		await i.update({ content: 'A button was clicked!', components: [] });
+      
+      
+//     }else if(buttonMessage.customId === 'third'){
+//   		await i.update({ content: 'A button was clicked!', components: [] });
+      
+      
+//     }else if(buttonMessage.customId === 'fourth'){
+//   		await i.update({ content: 'A button was clicked!', components: [] });
+      
+//     }
+//   });
   
-});
+//   // if(interaction.isButton &&  ){
+  
+//   // }
+
+// 	if (interaction.commandName === 'YOU DECIDE!') {
+// 		const row = new MessageActionRow()
+// 			.addComponents(
+// 				new MessageButton()
+// 					.setCustomId('first')
+// 					.setLabel('Iago Moment')
+// 					.setStyle('PRIMARY'),
+// 			)
+//       .addComponents(
+// 				new MessageButton()
+// 					.setCustomId('second')
+// 					.setLabel('Clara Moment')
+// 					.setStyle('PRIMARY'),
+// 			)
+//       .addComponents(
+//         new MessageButton()
+//           .setCustomId('third')
+//           .setLabel('Desde Moment')
+//           .setStyle('PRIMARY'),
+// 			)
+//       .addComponents(
+//         new MessageButton()
+//           .setCustomId('fourth')
+//           .setLabel('Zhao Moment')
+//           .setStyle('PRIMARY'),
+//   		)
+// 		await interaction.reply({ content: 'SELECT appropiate reaction', ephemereal : true, components: [row]});
+// 	}
+
+//   // if (interaction.commandName === 'DELETE DATABASE') {
+//   //   const row = new MessageActionRow()
+// 		// 	.addComponents(
+//   //       new MessageButton()
+//   //         .setCustomId('fourth')
+//   //         .setLabel('Zhao Moment')
+//   //         .setStyle('DELETE'),
+//   // 		)
+    
+//   //   await interaction.reply({ content: 'ARE YOU SURE?', ephemereal : true, components : [])
+//   // }
+  
+// });
 
 client.on("message", msg => {
   if(msg.content.includes("cosa?") || msg.content.includes("che cosa?") || msg.content.includes("chi?")){
@@ -134,20 +163,12 @@ client.on("message", msg => {
   if(msg.content.includes("Giove") || msg.content.includes("giove")){
     msg.channel.send("STO STRONZO", {files: [] });
   }
+
+  if(msg.content.includes("db")){
+    getDBresults();   
+  }
   
 })
-
-collector.on('collect', async buttonMessage => {
-	if (buttonMessage.customId === 'first') {
-		await i.update({ content: 'A button was clicked!', components: [] });
-	}else if (buttonMessage.customId === 'second'){
-    
-  }else if(buttonMessage.customId === 'third'){
-    
-  }else if(buttonMessage.customId === 'fourth'){
-    
-  }
-});
 
 function rollDice(successValue, diceNumber, explodesOn){
   var i=0;
@@ -252,19 +273,34 @@ function parseIstruction(msg){
   }
 }
 
-//WIP
-// function getDBresults(){
-//   db.get("rolls").then(rolls => {
-//     if (rolls.length > 1) {
-//       fs.writeFile('C:\Users\User\Desktop\test.txt', JSON.stringify(rolls), { flag: 'a+' },  err => {
-//         if (err) {
-//           console.error(err)
-//           return
-//         }
+// function deleteDB(){
+//   db.list().then(keys => {
+//     keys.forEach(key => {
+//       db.delete(key)
+//     }).then(()=>{
+//       db.get("rolls").then(rolls => {
+//         if (!rolls || rolls.length < 1) {
+//           db.set("rolls", [])
+//         }  
 //       })
-//     } 
-//     return
-//   })
+//     })
+//   });
 // }
+
+function getDBresults(){
+  db.get("rolls").then(rolls => {
+    
+  //   if (rolls.length > 1) {
+  //     fs.writeFile('C:\Users\User\Desktop\test.txt', JSON.stringify(rolls), { flag: 'a+' },  err => {
+  //       if (err) {
+  //         console.error(err)
+  //         return
+  //       }
+  //     })
+  //   } 
+  //   return
+    console.log(rolls);
+  })
+}
 
 client.login(process.env.TOKEN)
