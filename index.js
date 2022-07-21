@@ -42,51 +42,51 @@ client.on('interactionCreate', async interaction => {
   
   // }
 
-	if (interaction.commandName === 'decide') {
-		const row = new MessageActionRow()
+	// if (interaction.commandName === 'decide') {
+	// 	const row = new MessageActionRow()
+	// 		.addComponents(
+	// 			new MessageButton()
+	// 				.setCustomId('first')
+	// 				.setLabel('Iago Moment')
+	// 				.setStyle('PRIMARY'),
+	// 		)
+ //      .addComponents(
+	// 			new MessageButton()
+	// 				.setCustomId('second')
+	// 				.setLabel('Clara Moment')
+	// 				.setStyle('PRIMARY'),
+	// 		)
+ //      .addComponents(
+ //        new MessageButton()
+ //          .setCustomId('third')
+ //          .setLabel('Desde Moment')
+ //          .setStyle('PRIMARY'),
+	// 		)
+ //      .addComponents(
+ //        new MessageButton()
+ //          .setCustomId('fourth')
+ //          .setLabel('Zhao Moment')
+ //          .setStyle('PRIMARY'),
+ //  		)
+	// 	await interaction.reply({ content: 'SELECT appropiate reaction', ephemereal : true, components: [row]});
+	// }
+
+  if (interaction.commandName === 'DELETE DATABASE') {
+    const row = new MessageActionRow()
 			.addComponents(
-				new MessageButton()
-					.setCustomId('first')
-					.setLabel('Iago Moment')
-					.setStyle('PRIMARY'),
-			)
-      .addComponents(
-				new MessageButton()
-					.setCustomId('second')
-					.setLabel('Clara Moment')
-					.setStyle('PRIMARY'),
-			)
+        new MessageButton()
+          .setCustomId('delete')
+          .setLabel('Delete')
+          .setStyle('DELETE'),
+  		)
       .addComponents(
         new MessageButton()
-          .setCustomId('third')
-          .setLabel('Desde Moment')
-          .setStyle('PRIMARY'),
-			)
-      .addComponents(
-        new MessageButton()
-          .setCustomId('fourth')
-          .setLabel('Zhao Moment')
+          .setCustomId('cancel')
+          .setLabel('Cancel')
           .setStyle('PRIMARY'),
   		)
-		await interaction.reply({ content: 'SELECT appropiate reaction', ephemereal : true, components: [row]});
-	}
-
-  // if (interaction.commandName === 'DELETE DATABASE') {
-  //   const row = new MessageActionRow()
-		// 	.addComponents(
-  //       new MessageButton()
-  //         .setCustomId('delete')
-  //         .setLabel('Delete')
-  //         .setStyle('DELETE'),
-  // 		)
-  //     .addComponents(
-  //       new MessageButton()
-  //         .setCustomId('cancel')
-  //         .setLabel('Cancel')
-  //         .setStyle('PRIMARY'),
-  // 		)
-  //   await interaction.reply({ content: 'ARE YOU SURE?', ephemereal : true, components : [row])
-  // }
+    await interaction.reply({ content: 'ARE YOU SURE?', ephemereal : true, components : [row]})
+  }
   
 });
 
@@ -123,6 +123,10 @@ client.on("message", msg => {
       msg.content.includes("harfam"))
   {
     msg.channel.send("",{files: ["https://i.kym-cdn.com/photos/images/newsfeed/002/206/828/c67.jpg"] });   
+  }
+
+  if (msg.content.includes("campanella") || msg.content.includes("mutande") || msg.content.includes("ding dong")){
+    msg.channel.send("",{files: ["https://m.media-amazon.com/images/I/31ntnn2FXvL._AC_.jpg"] });
   }
 
   if(msg.content.includes("pacchetto")){
@@ -163,11 +167,6 @@ client.on("message", msg => {
   if(msg.content.includes("Giove") || msg.content.includes("giove")){
     msg.channel.send("STO STRONZO", {files: [] });
   }
-
-  if(msg.content.includes("db")){
-    getDBresults();   
-  }
-  
 })
 
 function rollDice(successValue, diceNumber, explodesOn){
@@ -273,41 +272,33 @@ function parseIstruction(msg){
   }
 }
 
-// function deleteDB(){
-//   db.list().then(keys => {
-//     keys.forEach(key => {
-//       db.delete(key)
-//     }).then(()=>{
-//       db.get("rolls").then(rolls => {
-//         if (!rolls || rolls.length < 1) {
-//           db.set("rolls", [])
-//         }  
-//       })
-//     })
-//   });
-// }
+function deleteDB(){
+  db.list()
+    .then(keys => {
+      keys.forEach(key => {
+        db.delete(key)
+      })
+    });
+  
+  db.get("rolls").then(rolls => {
+    if (!rolls || rolls.length < 1) {
+      db.set("rolls", [])
+    }  
+  })
+}
 
 function getDBresults(){
   db.get("rolls").then(rolls => {
-    if (rolls.length > 1) {
-      const folderName = '/Users/DS';
-      try {
-        if (!fs.existsSync(folderName)) {
-          fs.mkdirSync(folderName);
-        }
-      } catch (err) {
-        console.error(err);
-    }
-    
-    fs.writeFile(folderName, JSON.stringify(rolls), { flag: 'a+' },  err => {
-        if (err) {
-          console.error(err)
-          return
-        }
-      })
-    } 
-    return
-    console.log(rolls);
+    path=process.cwd();
+    if (rolls.length > 1) {    
+      fs.writeFile(path+"/DatabaseContent/DB.txt", JSON.stringify(rolls), { flag: 'a+' },  err => {
+          if (err) {
+            console.error(err)
+            return
+          }
+        })
+      } 
+      return
   })
 }
 
